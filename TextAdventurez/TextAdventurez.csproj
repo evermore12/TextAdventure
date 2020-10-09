@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="CodeFile1.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Interpret.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="Item.cs" />
@@ -56,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

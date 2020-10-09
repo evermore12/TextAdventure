@@ -11,11 +11,12 @@ namespace TextAdventurez
     {
         static void Main(string[] args)
         {
-            Character character = new Character()
+
+            Character character = new Character
             {
-                Name = "Ezra",
-                //ADD TO LOWER CASE
+                Name = "Ezra"
             };
+
             while (true)
             {
                 try
@@ -24,7 +25,7 @@ namespace TextAdventurez
 
                     try
                     {
-                        character.DoSomething(input);
+                       character.DoSomething(input);
                     }
                     catch (Exception exception)
                     {

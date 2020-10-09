@@ -35,6 +35,10 @@ namespace TextAdventurez
                                 }
                             }
                         }
+                    },
+                    new Key
+                    {
+                        Name = "Silver key"
                     }
                 },
                 Doors = new List<Door>
@@ -97,6 +101,7 @@ namespace TextAdventurez
                     {
                         Name = "Barn door",
                         Orientation = Direction.north,
+                        Locked = true,
                         LockId = 1,
                         NextRoom = new Room
                         {

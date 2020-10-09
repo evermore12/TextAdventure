@@ -9,5 +9,9 @@ namespace TextAdventurez
     public class Key : Item
     {
         public int Id { get; set; }
+
+        public void Use(Door door)
+        {
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 
 namespace TextAdventurez
 {
@@ -59,6 +60,15 @@ namespace TextAdventurez
                 Name = text
             };
         }
+
+        public static Door Door(string text)
+        {
+            return new Door
+            {
+                Name = text
+            };
+        }
+
         public static string[] Split(string text, string separator, int count)
         {
             try
@@ -70,10 +80,5 @@ namespace TextAdventurez
                 throw;
             }
         }
-        public static string Word(string text, int sentenceRank) //Where in  the sentence
-        {
-            return (string)text.Split(' ').GetValue(sentenceRank);
-        }
-
     }
 }

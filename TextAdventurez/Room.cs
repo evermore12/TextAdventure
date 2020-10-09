@@ -13,5 +13,10 @@ namespace TextAdventurez
         public List<Door> Doors { get; set; }
         public List<Item> Items { get; set; }
         public bool EndPoint { get; set; }
+
+        public void GetInfo()
+        {
+            Console.WriteLine(string.Join("\n", Items.Select(items => items.Name)));
+        }
     }
 }
