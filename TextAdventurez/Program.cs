@@ -21,12 +21,19 @@ namespace TextAdventurez
                 try
                 {
                     string input = Console.ReadLine().ToLower();
-                    character.DoSomething(input);
-                }
-                catch (Exception)
-                {
 
-                    throw;
+                    try
+                    {
+                        character.DoSomething(input);
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                    }
+                }
+                catch
+                {
+                    //Wrong input format
                 }
             }
         }

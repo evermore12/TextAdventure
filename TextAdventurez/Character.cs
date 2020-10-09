@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,27 +18,26 @@ namespace TextAdventurez
         {
             Room = Repository.Start();
             Visited = new List<Room>();
-            Visited.Add(Room);
         }
         public void DoSomething(string text)
         {
-            Command command = InputHandler.Translate(ref text);
+            Command command = Interpret.Command(ref text);
             switch (command)
             {
-                case Command.none:
-                    break;
                 case Command.go:
-                    Go(InputHandler.TranslateDirection(text));
+                    Go(Interpret.Direction(text));
                     break;
                 case Command.get:
-                    Get(InputHandler.GetItem(text));
+                    Get(Interpret.Item(text));
                     break;
                 case Command.drop:
-                    Drop(InputHandler.GetItem(text));
+                    Drop(Interpret.Item(text));
                     break;
                 case Command.use:
+                    string[] values = Interpret.Split(text, "on", 2);
                     break;
                 case Command.look:
+                    Look();
                     break;
                 case Command.inspect:
                     break;
@@ -45,54 +45,76 @@ namespace TextAdventurez
                     break;
             }
         }
-        public void Go(Direction direction)
+        private void Go(Direction direction)
         {
             try
             {
-                Room = Room.Doors.Where(door => door.Orientation == direction).Select(door => door.NextRoom).FirstOrDefault();
+                if (direction == Direction.back)
+                {
+                    Room = Visited.Last();
+                    Visited.Remove(Visited.Last()); //To be able to go back multiple times
+                }
+                else
+                {
+                    if(Room.Doors.Single(door => door.Orientation == direction).Locked == true)
+                    {
+                        Console.WriteLine("The door is locked");
+                    }
+                    else
+                    {
+                        Visited.Add(Room); //Adds current room to the visited list right before going into another room
+                    }
+                }
+
+                Console.WriteLine(Room.Description);
             }
             catch (Exception)
             {
-                //Can't go there...
-                throw;
+                Console.WriteLine("Can't go there");
             }
         }
-        public void Get(Item item)
+        private void Get(Item item)
         {
             try
             {
                 Inventory.Add(Room.Items.Single(x => x.Name == item.Name));
+                Room.Items.Remove(Room.Items.Single(x => x.Name == item.Name));
             }
             catch (Exception)
             {
+                Console.WriteLine("Can't pick up \"{0}\"", item.Name);
                 //Can't pick up item.name
             }
         }
-        public void Drop(Item item)
+        private void Drop(Item item)
         {
             try
             {
-
+                Room.Items.Add(Inventory.Single(x => x.Name == item.Name));
+                Inventory.Remove(Inventory.Single(x => x.Name == item.Name));
             }
             catch (Exception)
             {
-
-                throw;
+                Console.WriteLine("Can't drop {0}", item.Name);
             }
-            //Dropped "text" in "room.name"
+
+            Console.WriteLine("Dropped {0} in {1}", item.Name, Room.Name);
         }
-        public void Use(Item item, Item item2)
+        private void Use(Item item, Item item2)
         {
             throw new NotImplementedException();
         }
-        public void Use(Key key, Door door)
+        private void Use(Key key, Door door)
         {
-
+            throw new NotImplementedException();
         }
-        public void GoBack()
+        private void Look()
         {
-            Room = Visited.ElementAt(Visited.Count - 2);
-            Visited.RemoveAt(Visited.Count - 1);
+            Console.WriteLine(Room.Description);
+        }
+        private void GoBack()
+        {
+            Room = Visited.Last();
             Console.WriteLine(Room.Description);
         }
     }
