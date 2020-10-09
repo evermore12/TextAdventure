@@ -18,7 +18,7 @@ namespace TextAdventurez
                 {
                     new Door
                     {
-                        Name = "Entrance door",
+                        Name = "Entrance doo",
                         Orientation = Direction.east,
                         NextRoom = new Room
                         {
