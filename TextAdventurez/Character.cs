@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,10 +30,10 @@ namespace TextAdventurez
                     Go(InputHandler.TranslateDirection(text));
                     break;
                 case Command.get:
-                    Get(text);
+                    Get(InputHandler.GetItem(text));
                     break;
                 case Command.drop:
-                    Drop(text);
+                    Drop(InputHandler.GetItem(text));
                     break;
                 case Command.use:
                     break;
@@ -46,64 +47,47 @@ namespace TextAdventurez
         }
         public void Go(Direction direction)
         {
-            if (direction == Direction.back) GoBack();
-            
-            else if (Room.Doors.Any(door => door.Orientation == direction) == true)
-            {
-                //IF DOOR IS UNLOCKED /*if(Room.Doors.Select(door => door.Locked).Where(door => door.)*/
-                Room = (Room.Doors.Where(door => door.Orientation == direction).Select(door => door.NextRoom).FirstOrDefault());
-                Console.WriteLine(Room.Description);
-                Visited.Add(Room);
-                
-            }
-            else
-            {
-                Console.WriteLine("Cant go there");
-            }
-        }
-        public void Get(string text)
-        {
-            Inventory.Add(Room.Items.Where(item => item.Name == text).FirstOrDefault());
-
-            if (Inventory.Last().Name == text)
-            {
-                //Picked up "text"
-            }
-            else
-            {
-                //"Sorry, couldn't add that item
-            }
-        }
-        public void Drop(string text)
-        {
             try
             {
-                Room.Items.Add(Inventory.Single(Item => Item.Name == text));
-                Inventory.Remove(Inventory.Single(item => item.Name == text));
+                Room = Room.Doors.Where(door => door.Orientation == direction).Select(door => door.NextRoom).FirstOrDefault();
             }
             catch (Exception)
             {
+                //Can't go there...
+                throw;
+            }
+        }
+        public void Get(Item item)
+        {
+            try
+            {
+                Inventory.Add(Room.Items.Single(x => x.Name == item.Name));
+            }
+            catch (Exception)
+            {
+                //Can't pick up item.name
+            }
+        }
+        public void Drop(Item item)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
             //Dropped "text" in "room.name"
         }
-        public void Use(string text)
+        public void Use(Item item, Item item2)
         {
             throw new NotImplementedException();
-            string[] values = InputHandler.SplitInTwo(text);
+        }
+        public void Use(Key key, Door door)
+        {
 
-            
-                //Room.Doors.Where(door => door.Name == values[1]).Select(door => door.LockId)
-
-            try
-            {
-                Room.Doors.Where(door => door.Name == values[1]);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
         }
         public void GoBack()
         {

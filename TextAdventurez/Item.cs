@@ -10,5 +10,7 @@ namespace TextAdventurez
     {
         public string Name { get; set; }
         public string Descrption { get; set; }
+        public int Count { get; set; } = 1;
+        public List<Recipe> Interactions { get; set; }
     }
 }

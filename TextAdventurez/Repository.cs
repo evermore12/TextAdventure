@@ -14,11 +14,34 @@ namespace TextAdventurez
             {
                 Name = "Field",
                 Description = "You are in the field",
+                Items = new List<Item>
+                {
+                    new Item
+                    {
+                        Name = "Bottles",
+                        Count = 3,
+                        Interactions = new List<Recipe>
+                        {
+                            new Recipe
+                            {
+                                Combine = new Item
+                                {
+                                    Name = "Cork screw",   
+                                },
+                                Result = new Item
+                                {
+                                    Name = "Opened bottles",
+                                    Count = 3
+                                }
+                            }
+                        }
+                    }
+                },
                 Doors = new List<Door>
                 {
                     new Door
                     {
-                        Name = "Entrance doo",
+                        Name = "Entrance door",
                         Orientation = Direction.east,
                         NextRoom = new Room
                         {

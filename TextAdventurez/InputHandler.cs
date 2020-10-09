@@ -42,6 +42,13 @@ namespace TextAdventurez
             }
             return direction;
         }
+        public static Item GetItem(string text)
+        {
+            return new Item
+            {
+                Name = text
+            };
+        }
         public static string[] SplitInTwo(string text)
         {
             try
