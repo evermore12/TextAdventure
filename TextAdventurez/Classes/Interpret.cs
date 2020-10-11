@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using TextAdventurez.Resource_Files;
 
 namespace TextAdventurez
 {
@@ -32,7 +33,7 @@ namespace TextAdventurez
             }
             catch (Exception)
             {
-                throw new Exception("Could not recognize command");
+                throw new Exception(Messages.interpret_command_unsuccessful);
             }
         }
         public static Direction Direction(string text)
@@ -43,37 +44,15 @@ namespace TextAdventurez
             }
             catch (Exception)
             {
-                throw new Exception("Could not recognize direction");
+                throw new Exception(Messages.interpret_direction_unsuccessful);
             }
-        }
-        public static Item Item(string text)
-        {
-            return new Item
-            {
-                Name = text
-            };
-        }
-        public static Key Key(string text)
-        {
-            return new Key
-            {
-                Name = text
-            };
-        }
-
-        public static Door Door(string text)
-        {
-            return new Door
-            {
-                Name = text
-            };
         }
 
         public static string[] Split(string text, string separator, int count)
         {
             try
             {
-                return text.Split(new string[] { "on" }, 2, StringSplitOptions.None);
+                return text.Split(new string[] { separator }, 2, StringSplitOptions.None);
             }
             catch (Exception)
             {

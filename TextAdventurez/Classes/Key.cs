@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace TextAdventurez
 {
-    //https://crafting.thedestruc7i0n.ca/
-    public class Recipe
+    public class Key : Item
     {
-        public Item Combine { get; set; }
-        public Item Result { get; set; }
+        public int Id { get; set; }
+
+        public string Use()
+        {
+
+        }
     }
 }

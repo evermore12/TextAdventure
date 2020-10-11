@@ -11,8 +11,9 @@ namespace TextAdventurez
     {
         static void Main(string[] args)
         {
+            Game game = new Game();
 
-            Character character = new Character
+            game.Character = new Character
             {
                 Name = "Ezra"
             };
@@ -25,7 +26,8 @@ namespace TextAdventurez
 
                     try
                     {
-                       character.DoSomething(input);
+                       string message = game.UserCommand(input);
+                       Console.WriteLine(message);
                     }
                     catch (Exception exception)
                     {
