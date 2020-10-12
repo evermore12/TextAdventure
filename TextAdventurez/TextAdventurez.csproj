@@ -45,11 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Character.cs" />
+    <Compile Include="Classes\Entity.cs" />
     <Compile Include="Classes\Game.cs" />
     <Compile Include="Classes\Interpret.cs" />
     <Compile Include="Classes\Exit.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Key.cs" />
+    <Compile Include="Classes\OutputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\Recipe.cs" />
@@ -93,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

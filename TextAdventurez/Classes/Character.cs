@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TextAdventurez.Classes;
 using TextAdventurez.Resource_Files;
 
 namespace TextAdventurez
@@ -25,7 +26,7 @@ namespace TextAdventurez
             Visited = new List<Location>();
         }
 
-        public string Go(Direction direction)
+        public void Go(Direction direction)
         {
             try
             {
@@ -33,66 +34,72 @@ namespace TextAdventurez
                 {
                     Location = Visited.Last();
                     Visited.Remove(Visited.Last()); //To be able to go back multiple times in succession
-                    return Location.GetInfo();
+                    OutputHandler.SetMessage(Location.GetInfo());
                 }
                 else
                 {
                     if (Location.Exits.Single(door => door.Orientation == direction).Locked == true)
                     {
-                        return string.Format(Messages.character_go_door_locked);
+                        OutputHandler.SetMessage("The door is locked");
                     }
                     else
                     {
                         Visited.Add(Location); //Adds current room to the visited list right before going into another room
                         Location = Location.Exits.Single(door => door.Orientation == direction).NextLocation;
-                        return Location.GetInfo();
+                        OutputHandler.SetMessage(Location.GetInfo());
                     }
                 }
             }
             catch (Exception)
             {
-                return string.Format(Messages.character_go_unsuccessful);
+                OutputHandler.SetMessage("You can't go there");
             }
         }
-        public string Get(string item)
+        public void Get(string item)
         {
             try
             {
                 Inventory.Add(Location.Items.Single(x => x.Name.ToLower() == item));
                 Location.Items.Remove(Location.Items.Single(x => x.Name.ToLower() == item));
-                return string.Format(Messages.character_get_successful, item);
+                OutputHandler.SetMessage(string.Format("Picked up {0}", item));
             }
             catch (Exception)
             {
-                return string.Format(Messages.character_get_unsuccesful, item);
+                OutputHandler.SetMessage(string.Format("Can't pick up {0}", item));
             }
         }
-        public string Drop(string item)
+        public void Drop(string item)
         {
             try
             {
                 Location.Items.Add(Inventory.Single(x => x.Name.ToLower() == item));
                 Inventory.Remove(Inventory.Single(x => x.Name.ToLower() == item));
-                return string.Format(Messages.character_drop_successful, item, Location.Name);
+                OutputHandler.SetMessage(string.Format("Dropped {0} in {1}", item, Location));
             }
             catch (Exception)
             {
-                return string.Format(Messages.character_drop_unsuccessful, item);
+                OutputHandler.SetMessage(string.Format("Couldn't drop {0}", item));
             }
         }
-
-        public string Use(string byItem, string onItem)
+        public void Inspect(string text)
         {
-            try
+            if (Location.Exits.Any(x => x.Name.ToLower() == text))
             {
-                Inventory.Add(Inventory.Single(x => x.Name.ToLower() == byItem).Use(onItem));
-                Inventory.Remove(Inventory.Single(x => x.Name.ToLower() == onItem));
-                return string.Format(Messages.character_use_successful);
+                OutputHandler.SetMessage(Location.Exits.Single(x => x.Name.ToLower() == text).GetInfo());
             }
-            catch (Exception)
+            else if (Inventory.Any(x => x.Name.ToLower() == text))
             {
-                return string.Format(Messages.character_use_unsuccesful, byItem);
+                OutputHandler.SetMessage(Inventory.Single(x => x.Name.ToLower() == text).GetInfo());
             }
+            else if (Location.Items.Any(x => x.Name.ToLower() == text))
+            {
+                OutputHandler.SetMessage(Location.Items.Single(x => x.Name.ToLower() == text).GetInfo());
+            }
+            else
+            {
+                OutputHandler.SetMessage(string.Format("Can't find {0}", text));
+            }
+
         }
     }
 }

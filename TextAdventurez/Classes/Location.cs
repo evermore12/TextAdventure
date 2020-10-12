@@ -1,49 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TextAdventurez.Classes;
 using TextAdventurez.Resource_Files.Exits;
 
 namespace TextAdventurez
 {
-    public class Location
+    public class Location : Entity
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
         public List<Exit> Exits { get; set; }
         public List<Item> Items { get; set; }
         public bool EndPoint { get; set; } = false;
-        public Location()
+        public Location(string name, string description, bool endPoint = false) : base(name, description)
         {
-
-        }
-        public Location(Location location)
-        {
-            Name = location.Name;
-            Description = location.Description;
-            Exits = location.Exits;
-            Items = location.Items;
-            EndPoint = location.EndPoint;
+            EndPoint = endPoint;
+            Exits = new List<Exit>();
+            Items = new List<Item>();
         }
 
-        /// <param name="extendedInfo">False by default, True for extended information</param>
-        public string GetInfo(bool extendedInfo = false)
+        /// <param name="extendedInfo">True to return description, items and exits.</param>
+        public string GetInfo(bool extendedInfo)
         {
-            if (!extendedInfo)
-            {
-                return Description;
-            }
-            else
-            {
-                string message = "";
-                if(Exits.Count > 0) message += string.Join("\n", Exits.Select(exit => exit.Name));
+            string message = base.GetInfo();
 
-                if(Items.Count > 0) message += "\n" + string.Join("\n", Items.Select(items => items.Name));
+            if (extendedInfo)
+            {
+                if (Exits.Count > 0) message += "\nExits:\n-" + string.Join("\n-", Exits.Select(exit => exit.Name));
 
-                return message;
+                if (Items.Count > 0) message += "\nItems:\n-" + string.Join("\n-", Items.Select(item => item.Name));
             }
+
+            return message;
         }
     }
 }
+

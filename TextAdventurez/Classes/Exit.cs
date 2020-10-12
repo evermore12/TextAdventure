@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using TextAdventurez.Classes;
 using TextAdventurez.Resource_Files;
 
 namespace TextAdventurez
@@ -16,41 +18,28 @@ namespace TextAdventurez
         west,
         back
     }
-    public class Exit
+    public class Exit : Entity
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
         public Direction Orientation { get; set; }
         public int LockId { get; set; }
         public bool Locked { get; set; } = false;
         public Location NextLocation { get; set; }
-        public Exit(Exit exit)
+        public Exit(string name, string description, Direction orientation, int lockId, bool locked = false) : base(name, description)
         {
-            Name = exit.Name;
-            Description = exit.Description;
-            Orientation = exit.Orientation;
-            LockId = exit.LockId;
-            Locked = exit.Locked;
-            NextLocation = exit.NextLocation;
+            Orientation = orientation;
+            LockId = lockId;
+            Locked = locked;
         }
-        public Exit()
-        {
-
-        }
-        public string GetInfo()
-        {
-            return Description;
-        }
-        public string Unlock(Key key)
+        public void Unlock(Key key)
         {
             if(key.Id == LockId)
             {
                 Locked = false;
-                return string.Format(Messages.exit_unlock_successful, Name);
+                OutputHandler.SetMessage(string.Format("Unlocked {0}", Name));
             }
             else
             {
-                return string.Format(Messages.exit_unlock_successful);
+                OutputHandler.SetMessage("Wrong key");
             }
         }
     }

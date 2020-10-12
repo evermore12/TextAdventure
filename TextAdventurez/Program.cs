@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using TextAdventurez.Classes;
 
 namespace TextAdventurez
 {
@@ -11,34 +12,49 @@ namespace TextAdventurez
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-
-            game.Character = new Character
+            try
             {
-                Name = "Ezra"
-            };
+                Game game = new Game();
 
-            while (true)
-            {
-                try
+                game.Character = new Character
                 {
-                    string input = Console.ReadLine().ToLower();
+                    Name = "Ezra"
+                };
 
+                while (game.Character.Location.EndPoint == false)
+                {
                     try
                     {
-                       string message = game.UserCommand(input);
-                       Console.WriteLine(message);
+                        string input = Console.ReadLine().ToLower();
+
+                        try
+                        {
+                            game.UserCommand(input);
+                            OutputHandler.DisplayMessage();
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception.Message);
+                        }
                     }
-                    catch (Exception exception)
+                    catch
                     {
-                        Console.WriteLine(exception.Message);
+                        Console.WriteLine("Invalid input");
                     }
                 }
-                catch
-                {
-                    //Wrong input format
-                }
+
+                Console.WriteLine("You have reached the end of the game");
+                Console.ReadLine();
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                throw;
+            }
+
+
         }
     }
 }
+
+

@@ -4,38 +4,18 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using TextAdventurez.Classes;
 using TextAdventurez.Resource_Files;
 using TextAdventurez.Resource_Files.Items;
 
 namespace TextAdventurez
 {
-    public class Item
+    public class Item : Entity
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
         public int Count { get; set; } = 1;
-        public List<Recipe> Interactions { get; set; }
-
-        public Item()
+        public Item(string name, string description) : base(name, description)
         {
 
-        }
-
-        public string GetInfo()
-        {
-            return Description;
-        }
-        public Item Use(string onItem)
-        {
-            try
-            {
-                return Interactions.Single(x => x.On.ToLower() == onItem).Result;
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(Messages.item_use_unsuccessful, Name, onItem);
-                return null;
-            }
         }
     }
 }

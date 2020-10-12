@@ -11,166 +11,68 @@ namespace TextAdventurez
 {
     public static class Repository
     {
+        public static List<Item> GetAllItems()
+        {
+            return new List<Item>
+            {
+                new Item(Items.banjo, Items_description.banjo),
+                new Item(Items.mask, Items_description.mask),
+                new Item(Items.bottle, Items_description.bottle),
+                new Item(Items.cork_screw, Items_description.cork_screw),
+                new Item(Items.bottle_opened, Items_description.bottle_opened),
+                new Key(Items.silver_key, Items_description.silver_key, 1)
+            };
+        }
         public static List<Recipe> GetAllRecipes()
         {
             return new List<Recipe>
             {
                 new Recipe
                 {
-                    By = Items.cork_screw,
-                    On = Items.bottle,
-                    Result = new Item
-                    {
-                        Name = Items.bottle_opened,
-                        Description = Items_description.bottle_opened,
-                    },
-                },
-            };
-        }
-        public static List<Item> GetAllItems()
-        {
-            return new List<Item>
-            {
-                new Item
-                {
-                    Name = Items.banjo,
-                    Description = Items_description.banjo,
-                    Interactions = Repository.GetAllRecipes().Where(x => x.By == Items.banjo).ToList()
-                },
-                new Item
-                {
-                    Name = Items.mask,
-                    Description = Items.mask,
-                    Interactions = Repository.GetAllRecipes().Where(x => x.By == Items.mask).ToList()
-                },
-                new Item
-                {
-                    Name = Items.bottle,
-                    Description = Items_description.bottle,
-                    Interactions = Repository.GetAllRecipes().Where(x => x.By == Items.bottle).ToList()
-                },
-                new Item
-                {
-                    Name = Items.cork_screw,
-                    Description = Items_description.cork_screw,
-                    Interactions = Repository.GetAllRecipes().Where(x => x.By == Items.cork_screw).ToList()
-                },
-                new Key
-                {
-                    Name = Items.silver_key,
-                    Description = Items.silver_key,
-                    Id = 1
-                }
-            };
-        }
-
-        public static List<Exit> GetAllExits()
-        {
-            return new List<Exit>
-            {
-                new Exit
-                {
-                    Name = Exits.barn_door,
-                    Description = Exits_description.barn_door,
-                    Orientation = Direction.north,
-                    Locked = true,
-                    LockId = 1
-                },
-                new Exit
-                {
-                    Name = Exits.entrance_door,
-                    Description = Exits_description.entrance_door,
-                    Orientation = Direction.east,
-                },
-                new Exit
-                {
-                    Name = Exits.hallway_door,
-                    Description = Exits_description.hallway_door,
-                    Orientation = Direction.east,
-                },
-                new Exit
-                {
-                    Name = Exits.kitchen_door,
-                    Description = Exits_description.kitchen_door,
-                    Orientation = Direction.north,
-                },
-                new Exit
-                {
-                    Name = Exits.bedroom_door,
-                    Description = Exits_description.bedroom_door,
-                    Orientation = Direction.south,
-                }
-            };
-        }
-
-        public static List<Location> GetAllLocations()
-        {
-            return new List<Location>
-            {
-                new Location()
-                {
-                    Name = Locations.field,
-                    Description = Locations_description.field,
-                    Items = GetAllItems().Where(x => new[] {Items.bottle, Items.cork_screw}.Contains(x.Name)).ToList(),
-                },
-                new Location()
-                {
-                    Name = Locations.barn,
-                    Description = Locations_description.barn,
-                    Items = GetAllItems().Where(x => new[] {""}.Contains(x.Name)).ToList(),
-                },
-                new Location
-                {
-                    Name = Locations.entrance,
-                    Description = Locations_description.entrance,
-                    Items = GetAllItems().Where(x => new[] {""}.Contains(x.Name)).ToList(),
-                },
-                new Location
-                {
-                    Name = Locations.hallway,
-                    Description = Locations_description.hallway,
-                    Items = GetAllItems().Where(x => new[] {""}.Contains(x.Name)).ToList(),
-                },
-                new Location
-                {
-                    Name = Locations.kitchen,
-                    Description = Locations_description.kitchen,
-                    Items = GetAllItems().Where(x => new[] {""}.Contains(x.Name)).ToList(),
-                },
-                new Location
-                {
-                    Name = Locations.bedroom,
-                    Description = Locations_description.kitchen,
-                    Items = GetAllItems().Where(x => new[] {Items.silver_key}.Contains(x.Name)).ToList(),
+                    By = GetAllItems().Single(x => x.Name == Items.cork_screw),
+                    On = GetAllItems().Single(x => x.Name == Items.bottle),
+                    Result = GetAllItems().Single(x => x.Name == Items.bottle_opened),
                 },
             };
         }
 
         public static Location Start()
         {
-            return new Location(GetAllLocations().Single(x => x.Name == Locations.field))
-            {
+            return new Location(Locations.field, Locations_description.field)
+            { 
+                Items = GetAllItems().Where(x => new[] { Items.bottle }.Contains(x.Name)).ToList(),
+
                 Exits = new List<Exit>
                 {
-                    new Exit(GetAllExits().Single(x => x.Name == Exits.entrance_door))
+                    new Exit(Exits.entrance_door, Exits_description.entrance_door, Direction.east, 2)
                     {
-                        NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.entrance))
+                        NextLocation = new Location(Locations.entrance, Locations_description.entrance)
                         {
+                            Items = GetAllItems().Where(x => new[] { Items.mask }.Contains(x.Name)).ToList(),
+
                             Exits = new List<Exit>
                             {
-                                new Exit(GetAllExits().Single(x => x.Name == Exits.hallway_door))
+                                new Exit(Exits.hallway_door, Exits_description.hallway_door, Direction.east, 3)
                                 {
-                                    NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.hallway))
+                                    NextLocation = new Location(Locations.hallway, Locations_description.hallway)
                                     {
+                                        Items = GetAllItems().Where(x => new[] { Items.banjo }.Contains(x.Name)).ToList(),
+
                                         Exits = new List<Exit>
                                         {
-                                            new Exit(GetAllExits().Single(x => x.Name == Exits.kitchen_door))
+                                            new Exit(Exits.kitchen_door, Exits_description.kitchen_door, Direction.north, 4)
                                             {
-                                                NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.kitchen))
+                                                NextLocation = new Location(Locations.kitchen, Locations_description.kitchen)
+                                                {
+                                                    Items = GetAllItems().Where(x => new[] { Items.cork_screw }.Contains(x.Name)).ToList()
+                                                }
                                             },
-                                            new Exit(GetAllExits().Single(x => x.Name == Exits.bedroom_door))
+                                            new Exit(Exits.bedroom_door, Exits_description.bedroom_door, Direction.south, 5)
                                             {
-                                                NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.bedroom))
+                                                NextLocation = new Location (Locations.bedroom, Locations_description.bedroom)
+                                                {
+                                                    Items = GetAllItems().Where(x => new[] { Items.silver_key }.Contains(x.Name)).ToList()
+                                                }
                                             }
                                         }
                                     }
@@ -178,17 +80,56 @@ namespace TextAdventurez
                             }
                         }
                     },
-                    new Exit(GetAllExits().Single(x => x.Name == Exits.barn_door))
+                    new Exit(Exits.barn_door, Exits_description.barn_door, Direction.north, 1, true)
                     {
-                        NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.barn))
+                        NextLocation = new Location(Locations.barn, Locations_description.barn, true)
                     },
                 }
+
             };
         }
     }
 }
 
-
+        //public static Location Start2()
+        //{
+        //    return new Location(GetAllLocations().Single(x => x.Name == Locations.field))
+        //    {
+        //        Exits = new List<Exit>
+        //        {
+        //            new Exit(GetAllExits().Single(x => x.Name == Exits.entrance_door))
+        //            {
+        //                NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.entrance))
+        //                {
+        //                    Exits = new List<Exit>
+        //                    {
+        //                        new Exit(GetAllExits().Single(x => x.Name == Exits.hallway_door))
+        //                        {
+        //                            NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.hallway))
+        //                            {
+        //                                Exits = new List<Exit>
+        //                                {
+        //                                    new Exit(GetAllExits().Single(x => x.Name == Exits.kitchen_door))
+        //                                    {
+        //                                        NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.kitchen))
+        //                                    },
+        //                                    new Exit(GetAllExits().Single(x => x.Name == Exits.bedroom_door))
+        //                                    {
+        //                                        NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.bedroom))
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            },
+        //            new Exit(GetAllExits().Single(x => x.Name == Exits.barn_door))
+        //            {
+        //                NextLocation = new Location(GetAllLocations().Single(x => x.Name == Locations.barn))
+        //            },
+        //        }
+        //    };
+        //}
 
 
 

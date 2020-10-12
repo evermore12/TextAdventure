@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using TextAdventurez.Classes;
 using TextAdventurez.Resource_Files;
 
 namespace TextAdventurez
@@ -33,7 +34,7 @@ namespace TextAdventurez
             }
             catch (Exception)
             {
-                throw new Exception(Messages.interpret_command_unsuccessful);
+                throw new Exception("Couldn't recognize command");
             }
         }
         public static Direction Direction(string text)
@@ -44,7 +45,7 @@ namespace TextAdventurez
             }
             catch (Exception)
             {
-                throw new Exception(Messages.interpret_direction_unsuccessful);
+                throw new Exception("Couldn't recognize direction");
             }
         }
 
@@ -56,7 +57,7 @@ namespace TextAdventurez
             }
             catch (Exception)
             {
-                throw;
+                throw new Exception("Couldn't recognize command");
             }
         }
     }

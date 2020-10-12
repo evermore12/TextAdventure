@@ -9,8 +9,9 @@ namespace TextAdventurez
     //https://crafting.thedestruc7i0n.ca/
     public class Recipe
     {
-        public string By { get; set; }
-        public string On { get; set; }
+        public Item By { get; set; }
+        public Item On { get; set; }
         public Item Result { get; set; }
+        public string Effect { get; set; }
     }
 }

@@ -9,10 +9,9 @@ namespace TextAdventurez
     public class Key : Item
     {
         public int Id { get; set; }
-
-        public string Use()
+        public Key(string name, string description, int id) : base(name, description)
         {
-
+            Id = id;
         }
     }
 }
