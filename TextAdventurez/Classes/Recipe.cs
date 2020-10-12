@@ -12,5 +12,6 @@ namespace TextAdventurez
         public Item By { get; set; }
         public Item On { get; set; }
         public Item Result { get; set; }
+        public string Effect { get; set; }
     }
 }
